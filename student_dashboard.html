@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard - Attendance Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>Attendance</h2>
+                <p>Tracker</p>
+            </div>
+        </div>
+
+        <div class="admin-profile">
+            <div class="profile-icon">S</div>
+
+            <div>
+                <strong>{{ student[0] }}</strong>
+                <span>Student</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/student_dashboard" class="nav-item active">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="/my_attendance" class="nav-item">
+                <span>✓</span>
+                My Attendance
+            </a>
+
+            <a href="/student_settings" class="nav-item">
+                <span>⚙</span>
+                Settings / About
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="/student_logout" class="nav-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Student Dashboard</h1>
+                <p>Welcome to your attendance dashboard</p>
+            </div>
+
+            <div class="user-box">
+
+                <div class="small-avatar">S</div>
+
+                <div>
+                    <strong>{{ student[0] }}</strong>
+                    <span>Student</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WELCOME CARD -->
+        <section class="student-welcome-card">
+
+            <div>
+                <span class="student-label">
+                    Welcome Back
+                </span>
+
+                <h2>{{ student[0] }}</h2>
+
+                <p>
+                    Here you can view your personal attendance
+                    information and attendance records.
+                </p>
+            </div>
+
+            <div class="student-welcome-icon">
+                ✓
+            </div>
+
+        </section>
+
+
+        <!-- STUDENT INFORMATION -->
+        <section class="student-info-grid">
+
+            <div class="student-info-card">
+
+                <span class="info-title">
+                    Register Number
+                </span>
+
+                <strong>
+                    {{ student[1] }}
+                </strong>
+
+            </div>
+
+
+            <div class="student-info-card">
+
+                <span class="info-title">
+                    Department
+                </span>
+
+                <strong>
+                    {{ student[2] }}
+                </strong>
+
+            </div>
+
+
+            <div class="student-info-card">
+
+                <span class="info-title">
+                    Section
+                </span>
+
+                <strong>
+                    {{ student[3] }}
+                </strong>
+
+            </div>
+
+
+            <div class="student-info-card">
+
+                <span class="info-title">
+                    Attendance
+                </span>
+
+                <strong>
+                    {{ percentage }}%
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- MY ATTENDANCE -->
+        <section class="student-action-card">
+
+            <div>
+
+                <h2>My Attendance</h2>
+
+                <p>
+                    View your attendance records by selecting
+                    a specific date.
+                </p>
+
+            </div>
+
+            <a href="/my_attendance"
+               class="student-action-btn">
+
+                View Attendance →
+
+            </a>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

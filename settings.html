@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings / About - Attendance Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>Attendance</h2>
+                <p>Tracker</p>
+            </div>
+        </div>
+
+        <div class="admin-profile">
+            <div class="profile-icon">A</div>
+
+            <div>
+                <strong>Admin</strong>
+                <span>Administrator</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/dashboard" class="nav-item">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="/attendance" class="nav-item">
+                <span>✓</span>
+                Attendance
+            </a>
+
+            <a href="/report" class="nav-item">
+                <span>▤</span>
+                Reports
+            </a>
+
+            <a href="/students" class="nav-item">
+                <span>＋</span>
+                Add Student
+            </a>
+
+            <a href="/settings" class="nav-item active">
+                <span>⚙</span>
+                Settings / About
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="/logout" class="nav-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Settings / About</h1>
+                <p>About the Attendance Tracker system</p>
+            </div>
+
+            <div class="user-box">
+
+                <div class="small-avatar">A</div>
+
+                <div>
+                    <strong>Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ABOUT CARD -->
+        <section class="about-card">
+
+            <div class="about-icon">
+                ✓
+            </div>
+
+            <h2>Attendance Tracker</h2>
+
+            <p class="about-subtitle">
+                Smart Attendance Management System
+            </p>
+
+            <div class="about-content">
+
+                <p>
+                    Attendance Tracker is a simple and professional
+                    attendance management system designed to make
+                    student attendance management easier and more
+                    organized.
+                </p>
+
+                <p>
+                    The system helps administrators manage student
+                    details, record attendance, view attendance
+                    information and generate attendance reports.
+                </p>
+
+                <p>
+                    It provides a clean and user-friendly interface
+                    for managing attendance efficiently and reducing
+                    manual work.
+                </p>
+
+            </div>
+
+            <div class="about-features">
+
+                <div class="about-feature">
+                    <span>✓</span>
+                    <div>
+                        <strong>Student Management</strong>
+                        <p>Add and manage student details.</p>
+                    </div>
+                </div>
+
+                <div class="about-feature">
+                    <span>✓</span>
+                    <div>
+                        <strong>Attendance Management</strong>
+                        <p>Record and view student attendance.</p>
+                    </div>
+                </div>
+
+                <div class="about-feature">
+                    <span>✓</span>
+                    <div>
+                        <strong>Attendance Reports</strong>
+                        <p>View attendance percentage reports.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="margin:20px 0;"><a href="/forgot_password" class="dashboard-return-btn">🔑 Forgot / Reset Password</a></div>
+
+            <a href="/dashboard" class="dashboard-return-btn">
+                ← Return to Dashboard
+            </a>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mark Attendance - Attendance Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>Attendance</h2>
+                <p>Tracker</p>
+            </div>
+        </div>
+
+        <div class="admin-profile">
+            <div class="profile-icon">A</div>
+
+            <div>
+                <strong>Admin</strong>
+                <span>Administrator</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/dashboard" class="nav-item">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="/attendance" class="nav-item">
+                <span>✓</span>
+                Attendance
+            </a>
+
+            <a href="/report" class="nav-item">
+                <span>▤</span>
+                Reports
+            </a>
+
+            <a href="/students" class="nav-item">
+                <span>＋</span>
+                Add Student
+            </a>
+
+            <a href="/dashboard" class="nav-item">
+                <span>⚙</span>
+                Settings / About
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="/" class="nav-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Mark Attendance</h1>
+                <p>Enter attendance for students</p>
+            </div>
+
+            <div class="user-box">
+
+                <div class="small-avatar">A</div>
+
+                <div>
+                    <strong>Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <section class="student-form-card">
+
+            <div class="student-form-header">
+
+                <div class="form-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <h2>Attendance Entry</h2>
+                    <p>Mark attendance for the selected date</p>
+                </div>
+
+            </div>
+
+
+            <form action="/mark_attendance" method="POST">
+
+                <!-- Date is already selected from the calendar.
+                     Keep it hidden so the user does not have to select it again. -->
+                <input type="hidden" name="attendance_date" value="{{ date }}" required>
+                <input type="hidden" name="department" value="{{ department }}" required>
+                <input type="hidden" name="section" value="{{ section }}" required>
+
+                <div class="selected-date-badge">
+                    Attendance Date: <strong>{{ date }}</strong>
+                </div>
+
+                <br>
+
+
+                <div class="student-table-container">
+
+                    <table class="student-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>S.No</th>
+                                <th>Register No</th>
+                                <th>Student Name</th>
+                                <th>Department</th>
+                                <th>Section</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for student in students %}
+
+                            <tr>
+
+                                <td>
+                                    {{ loop.index }}
+                                </td>
+
+                                <td>
+                                    {{ student[2] }}
+                                </td>
+
+                                <td>
+                                    {{ student[1] }}
+                                </td>
+
+                                <td>
+                                    {{ student[3] }}
+                                </td>
+
+                                <td>
+                                    {{ student[4] }}
+                                </td>
+
+                                <td>
+                                    <div class="attendance-editor-checks">
+                                        <label class="attendance-check attendance-present">
+                                            <input type="radio"
+                                                   name="status_{{ student['id'] }}"
+                                                   value="Present"
+                                                   {% if student['status'] == 'Present' or not student['status'] %}checked{% endif %}>
+                                            <span class="checkmark"></span>
+                                            <span class="check-label">Present</span>
+                                        </label>
+                                        <label class="attendance-check attendance-absent">
+                                            <input type="radio"
+                                                   name="status_{{ student['id'] }}"
+                                                   value="Absent"
+                                                   {% if student['status'] == 'Absent' %}checked{% endif %}>
+                                            <span class="checkmark"></span>
+                                            <span class="check-label">Absent</span>
+                                        </label>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="add-student-btn">
+
+                        Save Attendance
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

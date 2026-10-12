@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Tracker - Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>Attendance</h2>
+                <span>TRACKER</span>
+            </div>
+        </div>
+
+        <div class="admin-profile">
+
+            <div class="profile-icon">A</div>
+
+            <div>
+                <strong>Administrator</strong>
+                <small>Admin Account</small>
+            </div>
+
+        </div>
+
+        <nav class="navigation">
+
+            <a href="{{ url_for('dashboard') }}"
+               class="nav-item active">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="/attendance" class="nav-item">
+                <span>✓</span>
+                Attendance
+            </a>
+
+            <a href="/report" class="nav-item">
+                <span>▥</span>
+                Reports
+            </a>
+
+            <a href="/students" class="nav-item">
+                <span>＋</span>
+                Add Student
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="/settings" class="nav-item">
+    <span>⚙</span>
+    Settings / About
+</a>
+
+            <a href="/" class="nav-item logout">
+    <span>↪</span>
+    Logout
+</a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+
+                <p>
+                    Manage student attendance efficiently
+                </p>
+            </div>
+
+            <div class="top-right">
+
+                <div class="notification">
+                    🔔
+                </div>
+
+                <div class="user-box">
+
+                    <div class="small-avatar">
+                        A
+                    </div>
+
+                    <div>
+                        <strong>Admin</strong>
+                        <small>Administrator</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- WELCOME CARD -->
+        <section class="welcome-card">
+
+            <div>
+
+                <span class="welcome-label">
+                    WELCOME BACK
+                </span>
+
+                <h2>
+                    Good Morning, Administrator 👋
+                </h2>
+
+                <p>
+                    Select a date from the calendar to manage
+                    student attendance.
+                </p>
+
+            </div>
+
+            <div class="welcome-icon">
+                📅
+            </div>
+
+        </section>
+
+
+        <!-- CALENDAR + SELECTION -->
+        <section class="dashboard-grid">
+
+            <!-- CALENDAR -->
+            <div class="calendar-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            ATTENDANCE
+                        </span>
+
+                        <h2>
+                            Attendance Calendar
+                        </h2>
+
+                    </div>
+
+
+                    <div class="month-navigation">
+
+                        <button onclick="previousMonth()">
+                            ‹
+                        </button>
+
+                        <strong id="monthYear"></strong>
+
+                        <button onclick="nextMonth()">
+                            ›
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="calendar">
+
+                    <div class="weekdays">
+
+                        <span>MON</span>
+                        <span>TUE</span>
+                        <span>WED</span>
+                        <span>THU</span>
+                        <span>FRI</span>
+                        <span>SAT</span>
+                        <span>SUN</span>
+
+                    </div>
+
+                    <div id="calendarDays"
+                         class="calendar-days">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DATE / DEPARTMENT / SECTION -->
+            <div class="selection-card">
+
+                <div class="selection-header">
+
+                    <div class="calendar-small-icon">
+                        📅
+                    </div>
+
+                    <div>
+
+                        <span class="section-label">
+                            SELECTED DATE
+                        </span>
+
+                        <h2 id="selectedDate">
+                            Select a date
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="selection-content">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <select id="department">
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option value="CSE">
+                            Computer Science & Engineering
+                        </option>
+
+                        <option value="IT">
+                            Information Technology
+                        </option>
+
+                        <option value="ECE">
+                            Electronics & Communication
+                        </option>
+
+                        <option value="EEE">
+                            Electrical & Electronics
+                        </option>
+
+                    </select>
+
+
+                    <label>
+                        Section
+                    </label>
+
+                    <select id="section">
+
+                        <option value="">
+                            Select Section
+                        </option>
+
+                        <option value="A">
+                            Section A
+                        </option>
+
+                        <option value="B">
+                            Section B
+                        </option>
+
+                        <option value="C">
+                            Section C
+                        </option>
+
+                    </select>
+
+
+                    <button class="continue-btn"
+                            onclick="openAttendance()">
+
+                        Continue to Attendance
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer>
+
+            <span>
+                © 2026 Attendance Tracker
+            </span>
+
+            <span>
+                Smart Attendance Management System
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script>
+
+let currentDate = new Date();
+
+let selectedDate = null;
+
+
+/* =========================
+   CALENDAR
+========================= */
+
+function renderCalendar() {
+
+    const calendarDays =
+        document.getElementById("calendarDays");
+
+    const monthYear =
+        document.getElementById("monthYear");
+
+    calendarDays.innerHTML = "";
+
+    const year =
+        currentDate.getFullYear();
+
+    const month =
+        currentDate.getMonth();
+
+
+    const firstDay =
+        new Date(year, month, 1);
+
+    const lastDay =
+        new Date(year, month + 1, 0);
+
+
+    let startDay =
+        firstDay.getDay();
+
+    startDay =
+        startDay === 0
+            ? 6
+            : startDay - 1;
+
+
+    const totalDays =
+        lastDay.getDate();
+
+
+    const monthName =
+        currentDate.toLocaleString(
+            "default",
+            {
+                month: "long"
+            }
+        );
+
+
+    monthYear.innerText =
+        monthName + " " + year;
+
+
+    /* EMPTY DAYS */
+
+    for (
+        let i = 0;
+        i < startDay;
+        i++
+    ) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.classList.add(
+            "calendar-empty"
+        );
+
+        calendarDays.appendChild(
+            empty
+        );
+
+    }
+
+
+    /* DAYS */
+
+    for (
+        let day = 1;
+        day <= totalDays;
+        day++
+    ) {
+
+        const dayElement =
+            document.createElement("button");
+
+        dayElement.classList.add(
+            "calendar-day"
+        );
+
+        dayElement.innerText =
+            day;
+
+
+        /* TODAY */
+
+        const today =
+            new Date();
+
+        if (
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+        ) {
+
+            dayElement.classList.add(
+                "today"
+            );
+
+        }
+
+
+        /* SELECT DATE */
+
+        dayElement.onclick =
+            function () {
+
+                selectDate(
+                    year,
+                    month,
+                    day,
+                    dayElement
+                );
+
+            };
+
+
+        calendarDays.appendChild(
+            dayElement
+        );
+
+    }
+
+}
+
+
+/* =========================
+   SELECT DATE
+========================= */
+
+function selectDate(
+    year,
+    month,
+    day,
+    selectedButton
+) {
+
+    selectedDate =
+        new Date(
+            year,
+            month,
+            day
+        );
+
+
+    const formatted =
+        selectedDate.toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    document.getElementById(
+        "selectedDate"
+    ).innerText =
+        formatted;
+
+
+    /* REMOVE OLD SELECTION */
+
+    document
+        .querySelectorAll(
+            ".calendar-day"
+        )
+        .forEach(
+            function(button) {
+
+                button.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    /* ADD NEW SELECTION */
+
+    selectedButton.classList.add(
+        "selected"
+    );
+
+}
+
+
+/* =========================
+   PREVIOUS MONTH
+========================= */
+
+function previousMonth() {
+
+    currentDate.setMonth(
+        currentDate.getMonth() - 1
+    );
+
+    renderCalendar();
+
+}
+
+
+/* =========================
+   NEXT MONTH
+========================= */
+
+function nextMonth() {
+
+    currentDate.setMonth(
+        currentDate.getMonth() + 1
+    );
+
+    renderCalendar();
+
+}
+
+
+/* =========================
+   OPEN ATTENDANCE
+========================= */
+
+function openAttendance() {
+
+    if (!selectedDate) {
+
+        alert(
+            "Please select a date first."
+        );
+
+        return;
+
+    }
+
+
+    const department =
+        document.getElementById(
+            "department"
+        ).value;
+
+
+    const section =
+        document.getElementById(
+            "section"
+        ).value;
+
+
+    if (!department) {
+
+        alert(
+            "Please select a department."
+        );
+
+        return;
+
+    }
+
+
+    if (!section) {
+
+        alert(
+            "Please select a section."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+    "/attendance_entry?date=" +
+    selectedDate.toISOString().split("T")[0] +
+    "&department=" + department +
+    "&section=" + section;
+
+}
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+renderCalendar();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Records</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body>
+<div class="app-container">
+<aside class="sidebar">
+<div class="brand"><div class="brand-icon">✓</div><div><h2>Attendance</h2><p>Tracker</p></div></div>
+<div class="admin-profile"><div class="profile-icon">A</div><div><strong>Admin</strong><span>Administrator</span></div></div>
+<nav class="navigation">
+<a href="/dashboard" class="nav-item"><span>▣</span> Dashboard</a>
+<a href="/attendance" class="nav-item active"><span>✓</span> Attendance</a>
+<a href="/report" class="nav-item"><span>▤</span> Reports</a>
+<a href="/students" class="nav-item"><span>＋</span> Add Student</a>
+<a href="/settings" class="nav-item"><span>⚙</span> Settings / About</a>
+</nav>
+<div class="sidebar-bottom"><a href="/logout" class="nav-item logout"><span>↪</span> Logout</a></div>
+</aside>
+<main class="main-content">
+<div class="topbar"><div><h1>Attendance Records</h1><p>Actual date-wise Present / Absent records</p></div></div>
+<section class="attendance-result-card">
+<div class="attendance-table-container">
+<table class="attendance-table">
+<thead><tr><th>S.No</th><th>Date</th><th>Register No</th><th>Student Name</th><th>Department</th><th>Section</th><th>Status</th></tr></thead>
+<tbody>
+{% for record in attendance %}
+<tr>
+<td>{{ loop.index }}</td><td>{{ record["attendance_date"] }}</td><td>{{ record["register_no"] }}</td>
+<td>{{ record["name"] }}</td><td>{{ record["department"] }}</td><td>{{ record["section"] }}</td>
+<td>{% if record["status"]=="Present" %}<span class="status-present">● Present</span>{% else %}<span class="status-absent">● Absent</span>{% endif %}</td>
+</tr>
+{% else %}<tr><td colspan="7" class="no-attendance">No attendance records found.</td></tr>{% endfor %}
+</tbody>
+</table></div>
+</section>
+<a href="/dashboard" class="dashboard-return-btn">← Back to Dashboard</a>
+</main></div>
+</body></html>

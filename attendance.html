@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Attendance Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-icon">✓</div><div><h2>Attendance</h2><p>Tracker</p></div></div>
+        <div class="admin-profile"><div class="profile-icon">A</div><div><strong>Admin</strong><span>Administrator</span></div></div>
+        <nav class="navigation">
+            <a href="/dashboard" class="nav-item"><span>▣</span> Dashboard</a>
+            <a href="/attendance" class="nav-item active"><span>✓</span> Attendance</a>
+            <a href="/report" class="nav-item"><span>▤</span> Reports</a>
+            <a href="/students" class="nav-item"><span>＋</span> Add Student</a>
+            <a href="/settings" class="nav-item"><span>⚙</span> Settings / About</a>
+        </nav>
+        <div class="sidebar-bottom"><a href="/logout" class="nav-item logout"><span>↪</span> Logout</a></div>
+    </aside>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div><h1>Attendance</h1><p>View daily student attendance</p></div>
+            <div class="user-box"><div class="small-avatar">A</div><div><strong>Admin</strong><span>Administrator</span></div></div>
+        </div>
+
+        <section class="attendance-filter">
+            <div class="section-label">Select Department</div>
+            <select id="department">
+                <option value="">Select Department</option>
+                <option value="CSE" {% if department=="CSE" %}selected{% endif %}>Computer Science Engineering</option>
+                <option value="ECE" {% if department=="ECE" %}selected{% endif %}>Electronics & Communication</option>
+                <option value="EEE" {% if department=="EEE" %}selected{% endif %}>Electrical & Electronics</option>
+                <option value="MECH" {% if department=="MECH" %}selected{% endif %}>Mechanical Engineering</option>
+                <option value="CIVIL" {% if department=="CIVIL" %}selected{% endif %}>Civil Engineering</option>
+            </select>
+
+            <div class="section-label">Select Section</div>
+            <select id="section">
+                <option value="">Select Section</option>
+                <option value="A" {% if section=="A" %}selected{% endif %}>Section A</option>
+                <option value="B" {% if section=="B" %}selected{% endif %}>Section B</option>
+                <option value="C" {% if section=="C" %}selected{% endif %}>Section C</option>
+            </select>
+
+            <button class="continue-btn" onclick="showCalendar()">Choose Date</button>
+        </section>
+
+        <section class="attendance-calendar-card" id="calendarSection" {% if not department or not section %}style="display:none;"{% endif %}>
+            <div class="card-header">
+                <div><h2>Select Date</h2><p>Click a date to view attendance status</p></div>
+                <div class="month-navigation">
+                    <button onclick="previousMonth()">‹</button>
+                    <h3 id="monthYear"></h3>
+                    <button onclick="nextMonth()">›</button>
+                </div>
+            </div>
+            <div class="weekdays">
+                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div class="calendar-days" id="calendarDays"></div>
+        </section>
+
+        {% if date %}
+        <section class="attendance-result-card">
+            <div class="result-header">
+                <div>
+                    <h2>Attendance Details</h2>
+                    <p>{{ department }} - Section {{ section }} | Date: {{ date }}</p>
+                </div>
+                <a class="add-student-btn attendance-edit-btn" href="/attendance_entry?date={{ date }}&department={{ department }}&section={{ section }}">Edit / Mark Attendance</a>
+                {% if request.args.get('saved') %}
+                    <div class="status-present">✓ Attendance Saved</div>
+                {% endif %}
+            </div>
+
+            <div class="attendance-table-container">
+                    <table class="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>S.No</th><th>Register No</th><th>Student Name</th>
+                                <th>Department</th><th>Section</th><th>Present</th><th>Absent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for student in students %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ student["register_no"] }}</td>
+                                <td>{{ student["name"] }}</td>
+                                <td>{{ student["department"] }}</td>
+                                <td>{{ student["section"] }}</td>
+                                <td>
+                                    <label class="attendance-check" title="Present">
+                                        <input type="checkbox" disabled {% if student["status"]=="Present" %}checked{% endif %}>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="attendance-check" title="Absent">
+                                        <input type="checkbox" disabled {% if student["status"]=="Absent" %}checked{% endif %}>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="7" class="no-attendance">No students found for this department and section.</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+        </section>
+        {% endif %}
+    </main>
+</div>
+
+<script>
+let currentDate = {% if date %}new Date("{{ date }}T00:00:00"){% else %}new Date(){% endif %};
+
+function showCalendar() {
+    const department = document.getElementById("department").value;
+    const section = document.getElementById("section").value;
+    if (!department || !section) {
+        alert("Please select department and section.");
+        return;
+    }
+    document.getElementById("calendarSection").style.display = "block";
+    renderCalendar();
+}
+
+function renderCalendar() {
+    const year = currentDate.getFullYear(), month = currentDate.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    const names = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    document.getElementById("monthYear").innerText = names[month] + " " + year;
+    const calendar = document.getElementById("calendarDays");
+    calendar.innerHTML = "";
+
+    for (let i=0; i<firstDay; i++) {
+        const e=document.createElement("div"); e.className="calendar-empty"; calendar.appendChild(e);
+    }
+    for (let day=1; day<=totalDays; day++) {
+        const b=document.createElement("button");
+        b.type="button"; b.className="calendar-day"; b.innerText=day;
+        b.onclick=function(){
+            const dept=document.getElementById("department").value;
+            const sec=document.getElementById("section").value;
+            if(!dept || !sec){ alert("Please select department and section."); return; }
+            const d=year+"-"+String(month+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+            window.location.href="/attendance?date="+d+"&department="+encodeURIComponent(dept)+"&section="+encodeURIComponent(sec);
+        };
+        calendar.appendChild(b);
+    }
+}
+function previousMonth(){ currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); }
+function nextMonth(){ currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); }
+renderCalendar();
+</script>
+</body>
+</html>

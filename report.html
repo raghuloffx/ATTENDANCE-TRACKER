@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - Attendance Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>Attendance</h2>
+                <p>Tracker</p>
+            </div>
+        </div>
+
+
+        <div class="admin-profile">
+
+            <div class="profile-icon">A</div>
+
+            <div>
+                <strong>Admin</strong>
+                <span>Administrator</span>
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <a href="/dashboard" class="nav-item">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="/attendance" class="nav-item">
+                <span>✓</span>
+                Attendance
+            </a>
+
+            <a href="/report" class="nav-item active">
+                <span>▤</span>
+                Reports
+            </a>
+
+            <a href="/students" class="nav-item">
+                <span>＋</span>
+                Add Student
+            </a>
+
+            <a href="/dashboard" class="nav-item">
+                <span>⚙</span>
+                Settings / About
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="/" class="nav-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Attendance Reports</h1>
+                <p>View student attendance percentage</p>
+            </div>
+
+
+            <div class="user-box">
+
+                <div class="small-avatar">A</div>
+
+                <div>
+                    <strong>Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTER -->
+
+        <section class="report-filter">
+
+            <div>
+                <label>Select Department</label>
+
+                <select id="reportDepartment">
+                    <option value="">Select Department</option>
+                    <option value="CSE">Computer Science Engineering</option>
+                    <option value="ECE">Electronics & Communication</option>
+                    <option value="EEE">Electrical & Electronics</option>
+                    <option value="MECH">Mechanical Engineering</option>
+                    <option value="CIVIL">Civil Engineering</option>
+                </select>
+            </div>
+
+
+            <div>
+                <label>Select Section</label>
+
+                <select id="reportSection">
+                    <option value="">Select Section</option>
+                    <option value="A">Section A</option>
+                    <option value="B">Section B</option>
+                    <option value="C">Section C</option>
+                </select>
+            </div>
+
+
+            <button onclick="viewReport()">
+                View Report
+            </button>
+
+        </section>
+
+
+        <!-- REPORT TABLE -->
+
+        {% if department and section %}
+
+        <section class="report-card">
+
+            <div class="report-heading">
+
+                <div>
+                    <h2>Student Attendance Report</h2>
+
+                    <p>
+                        {{ department }} -
+                        Section {{ section }}
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="report-table-container">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>S.No</th>
+                            <th>Register No</th>
+                            <th>Student Name</th>
+                            <th>Present</th>
+                            <th>Total Days</th>
+                            <th>Percentage</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% if reports %}
+
+                            {% for student in reports %}
+
+                            <tr>
+
+                                <td>{{ loop.index }}</td>
+
+                                <td>{{ student.register_no }}</td>
+
+                                <td>{{ student.name }}</td>
+
+                                <td>{{ student.present }}</td>
+
+                                <td>{{ student.total }}</td>
+
+                                <td>
+
+                                    <span class="percentage">
+                                        {{ student.percentage }}%
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="6"
+                                    class="no-report">
+
+                                    No attendance records found.
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+
+<script>
+
+function viewReport() {
+
+    const department =
+        document.getElementById("reportDepartment").value;
+
+    const section =
+        document.getElementById("reportSection").value;
+
+
+    if (!department) {
+
+        alert("Please select department.");
+
+        return;
+    }
+
+
+    if (!section) {
+
+        alert("Please select section.");
+
+        return;
+    }
+
+
+    window.location.href =
+        "/report?department=" +
+        encodeURIComponent(department) +
+        "&section=" +
+        encodeURIComponent(section);
+}
+
+</script>
+
+
+</body>
+</html>

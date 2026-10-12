@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Background Windows Style Design -->
+    <div class="background-design">
+        <div class="glass-shape shape1"></div>
+        <div class="glass-shape shape2"></div>
+        <div class="glass-shape shape3"></div>
+        <div class="glass-shape shape4"></div>
+    </div>
+
+
+    <div class="home-container">
+
+        <!-- Application Title -->
+        <div class="app-title">
+
+            <h1>ATTENDANCE TRACKER</h1>
+
+            <p>
+                Smart Attendance Management System
+            </p>
+
+            <span>
+                Track • Manage • Analyze Attendance Easily
+            </span>
+
+        </div>
+
+
+        <!-- Login Card -->
+        <div class="login-card">
+
+            <!-- ADMIN LOGIN -->
+            <div id="adminLogin">
+
+                <div class="login-icon">🔐</div>
+
+                <h2>Admin Login</h2>
+
+                <p class="login-info">
+                    Login to manage student attendance
+                </p>
+
+                <form action="/login" method="POST">
+
+                    <label>Username</label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter admin username"
+                        required
+                    >
+
+                    <label>Password</label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                    <button type="submit">
+                        LOGIN
+                    </button>
+
+                </form>
+
+                <p style="text-align:center; margin:12px 0;"><a href="/forgot_password">Forgot Password?</a></p>
+
+                <p class="switch-text">
+                    Are you a Student?
+                    <button
+                        type="button"
+                        class="switch-button"
+                        onclick="showStudentLogin()">
+                        Student Login →
+                    </button>
+                </p>
+
+            </div>
+
+
+            <!-- STUDENT LOGIN -->
+            <div id="studentLogin" style="display: none;">
+
+                <div class="login-icon">👨‍🎓</div>
+
+                <h2>Student Login</h2>
+
+                <p class="login-info">
+                    View your attendance details
+                </p>
+
+                <form action="/student_login" method="POST">
+
+                    <label>Register Number</label>
+
+                    <input
+                        type="text"
+                        name="register_no"
+                        placeholder="Enter register number"
+                        required
+                    >
+
+                    <label>Password</label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                    <button type="submit">
+                        STUDENT LOGIN
+                    </button>
+
+                </form>
+
+                <p style="text-align:center; margin:12px 0;"><a href="/forgot_password">Forgot Password?</a></p>
+
+                <p class="switch-text">
+                    Are you an Admin?
+                    <button
+                        type="button"
+                        class="switch-button"
+                        onclick="showAdminLogin()">
+                        ← Admin Login
+                    </button>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Features -->
+        <div class="features">
+
+            <div class="feature-box">
+                <span>👨‍🎓</span>
+                <p>Student Management</p>
+            </div>
+
+            <div class="feature-box">
+                <span>✅</span>
+                <p>Attendance Tracking</p>
+            </div>
+
+            <div class="feature-box">
+                <span>📊</span>
+                <p>Smart Reports</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function showStudentLogin() {
+
+            document.getElementById("adminLogin").style.display = "none";
+
+            document.getElementById("studentLogin").style.display = "block";
+        }
+
+
+        function showAdminLogin() {
+
+            document.getElementById("studentLogin").style.display = "none";
+
+            document.getElementById("adminLogin").style.display = "block";
+        }
+
+    </script>
+
+</body>
+</html>

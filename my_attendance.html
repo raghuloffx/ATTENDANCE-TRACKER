@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Attendance - Attendance Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app-container">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div><h2>Attendance</h2><p>Tracker</p></div>
+        </div>
+
+        <div class="admin-profile">
+            <div class="profile-icon">S</div>
+            <div>
+                <strong>{{ student_name }}</strong>
+                <span>Student</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+            <a href="/student_dashboard" class="nav-item">
+                <span>▣</span> Dashboard
+            </a>
+            <a href="/my_attendance" class="nav-item active">
+                <span>✓</span> My Attendance
+            </a>
+            <a href="/student_settings" class="nav-item">
+                <span>⚙</span> Settings / About
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="/student_logout" class="nav-item logout">
+                <span>↪</span> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div>
+                <h1>My Attendance</h1>
+                <p>View your attendance using the calendar</p>
+            </div>
+            <div class="user-box">
+                <div class="small-avatar">S</div>
+                <div>
+                    <strong>{{ student_name }}</strong>
+                    <span>Student</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="student-calendar-card">
+            <div class="card-header">
+                <div>
+                    <span class="section-label">ATTENDANCE</span>
+                    <h2>My Attendance Calendar</h2>
+                </div>
+                <div class="month-navigation">
+                    <button type="button" onclick="previousMonth()">‹</button>
+                    <strong id="monthYear"></strong>
+                    <button type="button" onclick="nextMonth()">›</button>
+                </div>
+            </div>
+
+            <div class="attendance-legend">
+                <span><i class="legend-dot present"></i> Present</span>
+                <span><i class="legend-dot absent"></i> Absent</span>
+                <span><i class="legend-dot no-record"></i> Not Marked</span>
+            </div>
+
+            <div class="student-weekdays">
+                <span>MON</span><span>TUE</span><span>WED</span>
+                <span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+            </div>
+
+            <div id="studentCalendarDays" class="student-calendar-days"></div>
+        </section>
+
+        <section class="selected-attendance-card">
+            <div class="selected-date-icon">📅</div>
+            <div>
+                <span class="section-label">SELECTED DATE</span>
+                <h2 id="selectedDateText">Select a date</h2>
+                <div id="selectedStatus" class="selected-status neutral">
+                    Click a date on the calendar to view attendance.
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+const attendanceRecords = {{ attendance_records|tojson }};
+let currentDate = new Date();
+let selectedDate = {{ selected_date|tojson }};
+
+function pad(n) {
+    return String(n).padStart(2, "0");
+}
+
+function formatDate(year, month, day) {
+    return year + "-" + pad(month + 1) + "-" + pad(day);
+}
+
+function displayDate(dateString) {
+    if (!dateString) return "Select a date";
+    const d = new Date(dateString + "T00:00:00");
+    return d.toLocaleDateString("en-GB", {
+        day: "2-digit", month: "long", year: "numeric"
+    });
+}
+
+function renderCalendar() {
+    const calendar = document.getElementById("studentCalendarDays");
+    const monthYear = document.getElementById("monthYear");
+
+    calendar.innerHTML = "";
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    let startDay = new Date(year, month, 1).getDay();
+    startDay = startDay === 0 ? 6 : startDay - 1;
+
+    const totalDays = new Date(year, month + 1, 0).getDate();
+
+    monthYear.textContent = currentDate.toLocaleString("default", {
+        month: "long", year: "numeric"
+    });
+
+    for (let i = 0; i < startDay; i++) {
+        const empty = document.createElement("div");
+        empty.className = "student-calendar-empty";
+        calendar.appendChild(empty);
+    }
+
+    for (let day = 1; day <= totalDays; day++) {
+        const date = formatDate(year, month, day);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "student-calendar-day";
+
+        const status = attendanceRecords[date];
+
+        if (status === "Present") {
+            button.classList.add("present");
+        } else if (status === "Absent") {
+            button.classList.add("absent");
+        } else {
+            button.classList.add("no-record");
+        }
+
+        if (date === selectedDate) {
+            button.classList.add("selected");
+        }
+
+        const today = new Date();
+        if (
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+        ) {
+            button.classList.add("today");
+        }
+
+        button.textContent = day;
+        button.onclick = () => selectDate(date);
+        calendar.appendChild(button);
+    }
+}
+
+function selectDate(date) {
+    selectedDate = date;
+    const status = attendanceRecords[date];
+
+    document.getElementById("selectedDateText").textContent =
+        displayDate(date);
+
+    const statusBox = document.getElementById("selectedStatus");
+    statusBox.className = "selected-status";
+
+    if (status === "Present") {
+        statusBox.classList.add("present");
+        statusBox.textContent = "🟢 Present";
+    } else if (status === "Absent") {
+        statusBox.classList.add("absent");
+        statusBox.textContent = "🔴 Absent";
+    } else {
+        statusBox.classList.add("neutral");
+        statusBox.textContent = "⚪ No attendance record for this date";
+    }
+
+    renderCalendar();
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("date", date);
+    window.history.replaceState({}, "", url);
+}
+
+function previousMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+}
+
+if (selectedDate) {
+    const d = new Date(selectedDate + "T00:00:00");
+    currentDate = new Date(d.getFullYear(), d.getMonth(), 1);
+}
+
+renderCalendar();
+
+if (selectedDate) {
+    selectDate(selectedDate);
+}
+</script>
+</body>
+</html>

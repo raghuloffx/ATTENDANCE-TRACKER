@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings / About - Attendance Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>Attendance</h2>
+                <p>Tracker</p>
+            </div>
+        </div>
+
+        <div class="admin-profile">
+
+            <div class="profile-icon">S</div>
+
+            <div>
+                <strong>{{ student_name }}</strong>
+                <span>Student</span>
+            </div>
+
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/student_dashboard" class="nav-item">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="/my_attendance" class="nav-item">
+                <span>✓</span>
+                My Attendance
+            </a>
+
+            <a href="/student_settings" class="nav-item active">
+                <span>⚙</span>
+                Settings / About
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="/student_logout" class="nav-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Settings / About</h1>
+                <p>About Attendance Tracker</p>
+            </div>
+
+        </div>
+
+
+        <section class="about-card">
+
+            <div class="about-icon">
+                ✓
+            </div>
+
+            <h2>Attendance Tracker</h2>
+
+            <p>
+                Attendance Tracker is a simple and professional
+                system designed to help students view their
+                attendance information easily.
+            </p>
+
+            <div class="about-features">
+
+                <div>
+                    <strong>✓</strong>
+                    <span>View Personal Information</span>
+                </div>
+
+                <div>
+                    <strong>✓</strong>
+                    <span>Check Attendance Percentage</span>
+                </div>
+
+                <div>
+                    <strong>✓</strong>
+                    <span>View Attendance by Date</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="dashboard-return">
+
+            <div style="margin:20px 0;"><a href="/forgot_password" class="dashboard-return-btn">🔑 Forgot / Reset Password</a></div>
+
+            <a href="/student_dashboard"
+               class="dashboard-return-btn">
+
+                ← Return to Dashboard
+
+            </a>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
